@@ -150,6 +150,12 @@ It is not a matcher, and it does not look for super-linear matching. Star
 height greater than 1 is a property of the expression, not a verdict on the
 engine.
 
+## Further reading
+
+[Four numbers for a regular expression](https://bkarak.wizhut.tech/blog/2026/04102026-2),
+a blog post on what the four measures say about an expression, and the
+choices behind counting them.
+
 ## License
 
 Apache License 2.0. See [License](License).
