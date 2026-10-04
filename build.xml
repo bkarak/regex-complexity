@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+regex-complexity build file
+Vassilios Karakoidas (bkarak@aueb.gr)
+-->
+<project name="regex-complexity" default="compile">
+	<property name="rc.build.dir" value="build"/>
+	<property name="rc.src.dir" value="src"/>
+	<property name="rc.dist.dir" value="dist"/>
+
+	<target name="compile" description="compile regex complexity package">
+		<mkdir dir="${rc.build.dir}"/>
+		<mkdir dir="${rc.dist.dir}"/>
+		<javac destdir="${rc.build.dir}" srcdir="${rc.src.dir}" includeantruntime="false"/>
+		<jar destfile="${rc.dist.dir}/regex-complexity.jar" basedir="${rc.build.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="org.fire.complexity.RegexComplexity"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="test" depends="compile" description="run the operator and complexity tests">
+		<mkdir dir="build-test"/>
+		<javac destdir="build-test" srcdir="test" classpath="${rc.build.dir}" includeantruntime="false"/>
+		<java classname="org.fire.complexity.MeasureTest" fork="true" failonerror="true">
+			<classpath>
+				<pathelement path="build-test"/>
+				<pathelement path="${rc.build.dir}"/>
+			</classpath>
+		</java>
+		<java classname="org.fire.complexity.ComplexityTest" fork="true" failonerror="true">
+			<classpath>
+				<pathelement path="build-test"/>
+				<pathelement path="${rc.build.dir}"/>
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="clean" description="Clean up directories">
+		<delete dir="${rc.build.dir}"/>
+		<delete dir="build-test"/>
+		<delete file="${rc.dist.dir}/regex-complexity.jar"/>
+	</target>
+</project>
