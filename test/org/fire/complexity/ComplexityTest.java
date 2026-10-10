@@ -59,6 +59,12 @@ public class ComplexityTest {
 		measure("\\.", 1, 0, 1, 1);
 		measure("\\u00E9", 1, 0, 1, 1);
 		measure("(a)\\1", 2, 0, 2, 1);
+		// A backslash before a letter above ASCII quotes it, as in Java.
+		measure("\\\u00E0", 1, 0, 1, 1);
+		measure("\\\u0414\u043D\u0435\u0439", 4, 0, 4, 1);
+		measure("\\\u02C6", 1, 0, 1, 1);
+		measure("\\\uD835\uDC00", 1, 0, 1, 1);
+		measure("\\\u00E0+", 1, 1, 1, 1);
 	}
 
 	private static void unionAndConcatenation() {
@@ -119,6 +125,10 @@ public class ComplexityTest {
 		measure("[^a]", 127, 0, 1, 127);
 		measure("[\\u00E9]", 1, 0, 1, 1);
 		measure("[^\\u00E9]", 128, 0, 1, 128);
+		measure("[\\\u00E0\\\u00E8]", 2, 0, 1, 2);
+		measure("[\\\u0414-\\\u042F]", 28, 0, 1, 28);
+		measure("[^\\\u00E0]", 128, 0, 1, 128);
+		measure("[\\\uD835\uDC00]", 1, 0, 1, 1);
 		// Case flags do not multiply the letters that were written.
 		measure("(?i)[a-z]", 26, 0, 1, 26);
 		measure("(?i)a", 1, 0, 1, 1);

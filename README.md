@@ -66,6 +66,9 @@ counts as the symbols it names: `\d` is 10, `\w` is 63, `\s` is 6, `[a-c]` is
 `\h` and `\v` are Java's horizontal and vertical whitespace, 19 and 7
 symbols, some of them above ASCII. Their complements `\H` and `\V` are taken
 over ASCII like the rest. A backreference such as `\1` counts as one symbol.
+A backslash before any character that is not an ASCII letter quotes it, as
+in Java, so `\à` and `\€` are one symbol each; an unknown escape before an
+ASCII letter, such as `\q`, is an error.
 
 ## Operators
 

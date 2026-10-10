@@ -594,7 +594,10 @@ public final class RegexParser {
 				finishBackref(cp - '0');
 				return Escape.backref();
 			default:
-				if (Character.isLetter(cp)) {
+				// As in java.util.regex: an unknown escape is an error only before an
+				// ASCII letter. Before anything else, a letter above ASCII included,
+				// the backslash quotes the character.
+				if (isAsciiLetter(cp)) {
 					throw error("Illegal/unsupported escape sequence");
 				}
 				return Escape.ch(cp);
@@ -766,8 +769,12 @@ public final class RegexParser {
 		return cp >= '0' && cp <= '9';
 	}
 
-	private static boolean isNameStart(int cp) {
+	private static boolean isAsciiLetter(int cp) {
 		return (cp >= 'A' && cp <= 'Z') || (cp >= 'a' && cp <= 'z');
+	}
+
+	private static boolean isNameStart(int cp) {
+		return isAsciiLetter(cp);
 	}
 
 	private static boolean isNamePart(int cp) {

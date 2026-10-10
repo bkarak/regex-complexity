@@ -62,6 +62,14 @@ public class MeasureTest {
 		expectFail("[a--c]");
 		expectFail("[&&]");
 		expectFail("\\0");
+		// Java rejects an unknown escape before an ASCII letter, and only there.
+		expectFail("\\q");
+		expectFail("[\\q]");
+
+		// Three regex101 shapes that escape a letter above ASCII.
+		oracle("[^0-9A-Z0-9\\\u00E0\\\u00E8\\\u00E9\\\u00EC\\\u00F2\\\u00F9\\\u20AC_\\,\\;\\:\\!\\.\\-\\+\\*\\/\\(\\)\\[\\]\\?=\\@\\%\\&#\\s]");
+		check("((\\\u0414\u043D\u0435\u0439.*\\:).*)", 2, 0, 2, 0, 0, 0, 2, 7, 1, 7, 1);
+		check("\\+|\\\u02C6|\\&", 0, 0, 0, 0, 2, 0, 0, 3, 0, 1, 3);
 
 		oracle("[a-c]");
 		oracle("[^a]");
